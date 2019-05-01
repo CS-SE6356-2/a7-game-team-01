@@ -53,7 +53,7 @@ public class Card {
 			return false;
 		if (!(obj instanceof Card))
 			return false;
-		Card other = (Card) obj;
+		Card other = (Card)obj;
 		return Objects.equals(category, other.category) && Objects.equals(value, other.value);
 	}
 	

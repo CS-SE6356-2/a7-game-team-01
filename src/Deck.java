@@ -54,14 +54,17 @@ public class Deck {
 			System.exit(1);
 		}	
 	}
+	
 	/**** FUNCTIONS ****/
 	void shuffle() {
 		Collections.shuffle(cards);
 	}
+	
 	/**** GETTERS/SETTERS ****/
 	public Card getCardAt(int i) {
 		return cards.get(i);
 	}
+	
 	public int getNumOfCards() {
 		return cards.size();
 	}
