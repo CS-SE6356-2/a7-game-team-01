@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 
 public class GameGUI extends Application {
 
-	// Cardgame cardgame; // reference to game controller
+	//Cardgame cardgame;//reference to game controller
 	
-	// inherited from Application, called when the GUI is launched
+	//inherited from Application, called when the GUI is launched
 	public void start(Stage stage) throws Exception {
 		BorderPane root = new BorderPane();//A container object that will be our root container, border pane can have 5 children, one aligned to the top of he screen, the bottom, the left, the right, and the center.
 		

@@ -2,30 +2,51 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Cardpile {
-	private List<Card> cards; // front of the list is the top of the pile
+
+	int numOfCards;
+	String pileName;
+	LinkedList<Card> cards;//front of the list is the top of the pile
 	
-	// Constructor, sets the name of the pile and initializes the pile to be empty
+	//default constructor
 	public Cardpile() {
-		cards = new LinkedList<>();
+		this("Pile");
 	}
-	
-	public int getNumOfCards() {
+	//Constructor, sets the name of the pile and initializes the pile to be empty
+	public Cardpile(String name) {
+		pileName = name;
+		numOfCards = 0;
+		cards = new LinkedList<Card>();
+	}
+	public Cardpile clone() {
+		return new Cardpile(this.numOfCards,this.pileName,this.cards);
+	}
+	@SuppressWarnings("unchecked")
+	private Cardpile(int numOfCards,String pileName,LinkedList<Card> cards) {
+		this.numOfCards = numOfCards;
+		this.pileName = pileName;
+		this.cards = (LinkedList<Card>) cards.clone();
+	}
+	public int size() {
 		return cards.size();
 	}
-	
-	// Returns the specified number of cards from the pile. The first element of the returned list is the first card drawn.
-	// If the pile contains less cards than requested, all the cards in the pile will be returned
-	List<Card> takeCards(int amount) {
-		List<Card> taken = new LinkedList<>();
+	public LinkedList<Card> getCards(){
+		return cards;
+	}
+	//Returns the specified number of cards from the pile. The first element of the returned list is the first card drawn.
+	//If the pile contains less cards than requested, all the cards in the pile will be returned
+	List<Card> takeCards(int amount){
+		LinkedList<Card> taken = new LinkedList<Card>();
 		
-		if(amount > cards.size()) { // if there are not enough cards in the pile
-			taken.addAll(cards); // return all cards
-			cards.clear(); // pile is emptied
+		if(amount > numOfCards) {//if there are not enough cards in the pile
+			taken.addAll(cards);//return all cards
+			cards.clear();//pile is emptied
+			numOfCards = 0;
 		}
-		else { // otherwise if there are enough cards
-			for(int i = 0; i < amount; i++) {
-				taken.add(cards.remove(0)); // return one card at a time, each drawn card is added to the end of the returned list
+		else {//otherwise if there are enough cards
+			for(int i = 0;i < amount; i++) {
+				taken.add(cards.removeFirst());//return one card at a time, each drawn card is added to the end of the returned list
 			}
+		numOfCards -= amount;//update the number of cards left in the pile;
 		}
 		
 		return taken;
@@ -33,48 +54,44 @@ public class Cardpile {
 	
 	void addCardsOnTop(List<Card> cards) {
 		this.cards.addAll(0, cards);//adds cards to the front of the list
+		numOfCards += cards.size();//updates the number of cards in the pile
 	}
 	
 	void addCardsOnBot(List<Card> cards) {
 		this.cards.addAll(cards);//adds cards to the end of the list
+		numOfCards += cards.size();//updates the number of cards in the pile
 	}
 
+	void addCardAtIndex(Card card, int position) {
+		this.cards.add(position,card);
+		numOfCards += 1;
+	}
 	//shuffles the card pile, emulating how a physical deck of cards is shuffled
 	void shuffle() {
 		for(int i = 0;i<7;i++) {//repeats the shuffling mechanic several times to ensure the cards are well shuffled
 			//LinkedList<Card> half1 = (LinkedList<Card>) cards.subList(0,numOfCards/2); //Can't go up like this, changed to line below
-			List<Card> half1 = new LinkedList<>(cards.subList(0, getNumOfCards() / 2));//split the deck in half
-			List<Card> half2 = new LinkedList<>(cards.subList(getNumOfCards() / 2, cards.size()));
+			LinkedList<Card> half1 = new LinkedList<Card>(cards.subList(0,numOfCards/2));//split the deck in half
+			LinkedList<Card> half2 = new LinkedList<Card>(cards.subList(numOfCards/2,cards.size()));
 			cards.clear();
 			
 			while(!half1.isEmpty() && !half2.isEmpty()) {//while there are cards in both halfs
 				if(Math.random() < 0.5) {//50% chance to chose half1 or half2
-					cards.add(half1.remove(0)); // takes the card from the first half and adds it back into the pile
+					cards.add(half1.removeFirst());//takes the card from the first half and adds it back into the pile
 				}
 				else{
-					cards.add(half2.remove(0)); // takes the card from the second half and adds it back into the pile
+					cards.add(half2.removeFirst());//takes the card from the second half and adds it back into the pile
 				}
 			}
-			cards.addAll(half1); // adds remaining cards
-			cards.addAll(half2); // one of these halves will be empty
+			cards.addAll(half1);//adds remaining cards
+			cards.addAll(half2);//one of these halves will be empty
 		}
+	}
+	public String toString() {
+		String s = "";
+		for(Card c : cards) {
+			s+=c.getCardInfo()+"  ";
+		}
+		return s;
 	}
 	
-	@Override
-	public String toString() {
-		if (getNumOfCards() == 0)
-			return "";
-		
-		final StringBuilder ret = new StringBuilder();
-		{ // handle the 1st card separately so there is no trailing newline
-			Card card = cards.get(0);
-			ret.append(card.getVal()).append(" ").append(card.getCategory());
-		}
-		for (int i = 1; i < getNumOfCards(); i++) {	// for each card in the pile, print its information
-			ret.append("\n");
-			Card card = cards.get(i);
-			ret.append(card.getVal()).append(" ").append(card.getCategory());
-		}
-		return ret.toString();
-	}
 }

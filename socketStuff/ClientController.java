@@ -211,7 +211,9 @@ class ClientThread extends Thread{
 							   //Determines if this Client is the one to go next
 							   if(mess[2].equals(game.gui.yourName)) {
 								   game.gui.turnLabel.setText("It's your turn");
+								   try {
 								   game.gui.root.getChildren().add(game.gui.playButton);
+								   }catch(Exception e) {}
 							   }
 							   else {
 								   game.gui.turnLabel.setText("It's " + mess[2] + "'s turn");
@@ -387,6 +389,15 @@ class ServerThread extends Thread{
 			}
 			//Group 3@@@@@Receive the player's move@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 			try {
+				System.out.println();
+				for(int count=2;count<cardGame.getPiles().size();count++) {
+					System.out.println("Pile "+(count-2)+":  "+cardGame.getPiles().get(count).toString());
+					count++;
+				}
+				System.out.print("YOUR HAND:  ");
+				for(Card c : focusPlayer.getActiveCards())
+					System.out.print(c.getCardInfo()+"  ");
+				System.out.println();
 				DataInputStream in = new DataInputStream(focusPlayer.getSock().getInputStream());
 				move = focusPlayer.getTeamName() + " played " + in.readUTF();
 			}
@@ -397,7 +408,8 @@ class ServerThread extends Thread{
 			//CHECK MOVE
 			boolean legal = cardGame.isLegalMove(focusPlayer, move);
 			if(!legal) {
-				//TODO extend to deal with illegal moves
+				System.out.println("INVALID MOVE / DRAWING CARD");
+				focusPlayer.getActiveCards().add(cardGame.draw());
 			}
 			
 			//Group 4@@@@@Tells Everyone what move was made@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

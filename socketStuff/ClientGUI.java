@@ -7,9 +7,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -53,47 +51,22 @@ public class ClientGUI extends Application{
 		
 		root = new VBox();
 		hostButton = new Button("Host Game");//part of main menu screen
-		hostButton.setFont(Font.font("Lato", 12));
-
 		joinButton = new Button("Join Game");//part of main menu screen
-		joinButton.setFont(Font.font("Lato", 12));
-
 		connectButton = new Button("Connect");//part of join screen
-		connectButton.setFont(Font.font("Lato", 12));
-
 		serverButton = new Button("Create Server");//part of host screen
-		serverButton.setFont(Font.font("Lato", 12));
-
 		backButton = new Button("Back");//part of host and join screens
-		backButton.setFont(Font.font("Lato", 12));
-
 		exitButton = new Button("Exit");//part of main menu screen
-		exitButton.setFont(Font.font("Lato", 12));
-
 		playButton = new Button("Play");//part of game screen
-		playButton.setFont(Font.font("Lato", 12));
-
 		startButton = new Button("Start Game");//part of hosting screen
-		startButton.setFont(Font.font("Lato", 12));
-
 		menuLabel = new Text("Main Menu");//part of all screens
-		menuLabel.setFont(Font.font("Lato", 25));
-
 		addressLabel = new Text("Starting server...");//part of host screen
-		addressLabel.setFont(Font.font("Lato", 12));
-		
 		infoLabel = new Text("Enter details below");//part of join and game screen
 		turnLabel = new Text();//part of game screen
-		testLabel = new Text();		//Used to test if a message is received
+		testLabel = new Text();		//Used to test if a message is recieved
 		addressInput = new TextField();//part of join screen
 		nameInput = new TextField();//part of host and join screen
 		gameInput = new TextField();//part of game screen
-
-
-		infoLabel.setFont(Font.font("Lato", 12));
-		turnLabel.setFont(Font.font("Lato", 12));
-		testLabel.setFont(Font.font("Lato", 12));
-
+		
 		//setup buttons and what-not
 		hostButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -158,7 +131,7 @@ public class ClientGUI extends Application{
 		main();
 		
 		stage.setTitle("Client Test");
-		Scene scene = new Scene(root, 500, 450);
+		Scene scene = new Scene(root, 800, 450);
 		stage.setScene(scene);
         stage.show();
 	}//end of start
@@ -168,7 +141,7 @@ public class ClientGUI extends Application{
 	void main() {
 		if(state.equals("hosting") || state.equals("lobby"))
 			game.closeSocks(state);
-
+		
 		mainScreen();
 		
 		state = "main";
@@ -177,7 +150,6 @@ public class ClientGUI extends Application{
 		root.getChildren().clear();
 		root.getChildren().addAll(menuLabel, hostButton, joinButton, exitButton);
 		menuLabel.setText("Main Menu");
-
 	}
 	
 	void preHost() {
@@ -195,7 +167,6 @@ public class ClientGUI extends Application{
 		
 		if(nameInput.getText().isEmpty()) {
 			infoLabel.setText("Enter your name!");
-
 			connectButton.setDisable(false);
 			return;
 		}
@@ -243,9 +214,7 @@ public class ClientGUI extends Application{
 	void joinScreen() {
 		root.getChildren().clear();
 		root.getChildren().addAll(menuLabel, infoLabel, addressInput, nameInput, connectButton, backButton);
-
 		menuLabel.setText("Join a Game");
-
 		infoLabel.setText("Enter details below");
 		addressInput.setPromptText("Enter Host Address");
 		nameInput.setPromptText("Enter Your Name");

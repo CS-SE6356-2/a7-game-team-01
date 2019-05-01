@@ -1,64 +1,62 @@
-import java.util.Objects;
-
 /*
 	Programmer: Tyler Heald
 	Date: 3/30/2019
 	Description:
 	The Card class is meant only to hold the value and category of a Card(number and suite).
 	It contains that data, ways to access it, and a method to print its data
+	
+	METHODS:
+	printCard()
+		Prints the cards data in the format "value category"
 */
+
 public class Card {
-	private final String value;
-	private final String category;
-	
+	// DATA FIELDS
+	String value;
+	String category;
+
+	/**** CONSTRUCTORS ****/
 	public Card(String v, String c) {
-		if (v == null || c == null)
-			throw new IllegalArgumentException();
+		value = v.trim();
+		category = c.trim();
+	}
+
+	public Card(String card) 
+	{
+		int delimiter = card.indexOf(" ");
+		if(delimiter>=0) {
+			value = card.substring(0, delimiter);
+			category = card.substring(delimiter+1, card.length());
+		}else {
+			value = card.substring(0, 1);
+			category = card.substring(1, 2);
+		}
+	}
+
+	/**** FUNCTIONS ****/
+	// Method to print card stats
+	public void printCard() {
+		System.out.println(value + " " + category);
+	}
+
+	/**** GETTERS/SETTERS ****/
+	void setVal(String v) {
 		value = v;
-		category = c;
 	}
-	
-	/**
-	 * Constructor.
-	 * @param str A string containing the value and the category, separated by a space. Matches the format of toString()
-	 */
-	public Card(String str) {
-		if (str == null)
-			throw new IllegalArgumentException();
-		String[] split = str.trim().split("\\s+", 1);
-		if (split.length != 2)
-			throw new IllegalArgumentException();
-		value = split[0];
-		category = split[1];
-	}
-	
-	/****	GETTERS/SETTERS	****/
+
 	String getVal() {
 		return value;
 	}
+
+	void setCategory(String c) {
+		category = c;
+	}
+
 	String getCategory() {
 		return category;
 	}
-	
-	/****	FUNCTIONS	****/
-	public String toString() {
-		return value + " " + category;
+
+	String getCardInfo() {
+		return "" + value + category;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Card))
-			return false;
-		Card other = (Card)obj;
-		return Objects.equals(category, other.category) && Objects.equals(value, other.value);
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(category, value);
-	}	
 }
