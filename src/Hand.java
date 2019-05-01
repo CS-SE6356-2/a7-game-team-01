@@ -2,14 +2,11 @@
 
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Objects;
 
 /* Represents the cards in a specific Player's possession. */
-public class Hand
-{
+public class Hand {
 /* Data */
-	/* Number of active and inactive cards in the hand */
-	int numOfCards;
 
 	/* All the cards that are able to be played */
 	private LinkedList<Card> activeCards;
@@ -22,7 +19,6 @@ public class Hand
 	/* Constructor */
 	public Hand()
 	{
-		this.numOfCards = 0;
 		this.activeCards = new LinkedList<Card>();
 		this.inactiveCards = new LinkedList<Card>();
 	}
@@ -45,7 +41,7 @@ public class Hand
 				Card card1 = this.activeCards.get(card1Index);
 				Card card2 = this.activeCards.get(card2Index);
 
-				if (false /*TODO card1.matches(card2)*/)
+				if (card1.equals(card2))
 				{
 					matchingCards.add(card1);
 					matchingCards.add(card2);
@@ -56,41 +52,29 @@ public class Hand
 	}
 
 	/* Adds all the cards in the list to the active cards */
-	public void addCards(LinkedList<Card> cards)
-	{
-		for (int index = 0;
-		     index < cards.size();
-		     ++index)
-		{
+	public void addCards(List<Card> cards) {
+		for (int index = 0; index < cards.size(); ++index) {
 			Card cardToAdd = cards.get(index);
 			this.activeCards.add(cardToAdd);
 		}
-		updateNumOfCards();
 	}
 
 	/* Removes all the cards in the list from the active cards,
 	 * returning a list of all cards successfully removed */
-	public LinkedList<Card> removeCards(LinkedList<Card> cards)
-	{
+	public LinkedList<Card> removeCards(List<Card> cards) {
 		LinkedList<Card> removedCards = new LinkedList<Card>();
-		for (int index = 0;
-		     index < cards.size();
-		     ++index)
-		{
+		for (int index = 0; index < cards.size(); ++index) {
 			Card cardToRemove = cards.get(index);
-			if (this.activeCards.remove(cardToRemove))
-			{
+			if (this.activeCards.remove(cardToRemove)) {
 				removedCards.add(cardToRemove);
 			}
 		}
-		updateNumOfCards();
 		return removedCards;
 	}
 
 	/* Transfers all the cards in the list from active cards to inactive cards 
 	 * and returns a list of all cards successfully transferred */
-	public LinkedList<Card> transferActiveToInactive(LinkedList<Card> cards)
-	{
+	public LinkedList<Card> transferActiveToInactive(LinkedList<Card> cards) {
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
 		for (int index = 0;
 		     index < cards.size();
@@ -108,8 +92,7 @@ public class Hand
 
 	/* Transfers all the cards in the list from inactive cards to active cards
 	 * and returns a list of all cards successfully transferred */
-	public LinkedList<Card> transferInactiveToActive(LinkedList<Card> cards)
-	{
+	public LinkedList<Card> transferInactiveToActive(LinkedList<Card> cards) {
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
 		for (int index = 0;
 		     index < cards.size();
@@ -126,46 +109,52 @@ public class Hand
 	}
 
 /* Getters */
-	public LinkedList<Card> getActiveCards()
-	{
-		return this.activeCards;
+	public LinkedList<Card> getActiveCards() {
+		return activeCards;
 	}
 	
-	public LinkedList<Card> getInactiveCards()
-	{
-		return this.inactiveCards;
+	public LinkedList<Card> getInactiveCards() {
+		return inactiveCards;
 	}
 	
 	//These both are used for the hand used in the ClientGUI
 	//Both make shallow copies of the lists
-	public void setActiveCards(List<Card> activeCards)
-	{
-		this.activeCards = new LinkedList<Card>(activeCards);
+	public void setActiveCards(List<Card> activeCards) {
+		activeCards = new LinkedList<Card>(activeCards);
 	}
-	public void setInactiveCards(List<Card> inactiveCards)
-	{
-		this.inactiveCards = new LinkedList<Card>(inactiveCards);
-	}
-
-	public int getNumOfCards()
-	{
-		return numOfCards;
+	
+	public void setInactiveCards(List<Card> inactiveCards) {
+		inactiveCards = new LinkedList<Card>(inactiveCards);
 	}
 
-/* Private methods */
-	/* Used to recalculate numOfCards when cards are added or removed */
-	private void updateNumOfCards()
-	{
-		numOfCards = this.activeCards.size() + this.inactiveCards.size();
+	public int size() {
+		return activeCards.size() + inactiveCards.size();
 	}
 
 	public boolean inHand(String cardName) {
-		String checker = (cardName.equals("WILD"))?"0W":cardName;
+		String checker = (cardName.equals("WILD")) ? "0W" : cardName;
 		for(Card c:activeCards) {
-			if(c.getCardInfo().equals(checker)||c.getCardInfo().equals(checker.replaceAll("[0-9]","")+checker.replaceAll("[^0-9]",""))) {
+			if(c.toString().equals(checker)||c.toString().equals(checker.replaceAll("[0-9]","")+checker.replaceAll("[^0-9]",""))) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Hand))
+			return false;
+		Hand other = (Hand) obj;
+		return Objects.equals(activeCards, other.activeCards) && Objects.equals(inactiveCards, other.inactiveCards);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(activeCards, inactiveCards);
 	}
 }

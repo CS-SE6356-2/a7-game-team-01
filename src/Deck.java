@@ -90,14 +90,14 @@ public class Deck {
 	{
 		return cards.get(i);
 	}
-	//Self-explanatory
-	public int getNumOfCards()
-	{
-		return numOfCards;
+	
+	public int size() {
+		return cards.size();
 	}
+
 	public boolean exists(String s) {
 		s = s.toUpperCase();
-		if(s.equals("WILD")||s.equals("0W"))
+		if(s.equals("WILD") || s.equals("0W"))
 			return true;
 		System.out.println(s);
 		String[] colors = {"R","G","B","Y"};
