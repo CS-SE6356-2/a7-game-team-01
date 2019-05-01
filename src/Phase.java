@@ -1,8 +1,6 @@
 //with reference from MaxRobinson
 import java.util.*;
 
-
-
 public class Phase {
     private Hand part1;
     private Hand part2;
@@ -13,7 +11,6 @@ public class Phase {
     public static String phases[] = {"set,3,set,3", "set,3,run,4", "set,4,run,4", "run,7", "run,8", "run,9",
             "set,4,set,4", "color,7", "set,5,set,2", "set,5,set,3"};
     public static int numberPhases[] = {6, 7, 8, 7, 8, 9, 8, 7, 7, 8};
-
 
     public Phase(ArrayList<Card> firstPart, ArrayList<Card> secondPart) {
         part1 = new Hand();
@@ -49,15 +46,13 @@ public class Phase {
         return phasePart;
     }
 
-
     public void setPart(int part, LinkedList<Card> cards) {
         if (!(part < 2)) {
             return;
         }
         synchronized (cards) {
             phasePart[part].getActiveCards().clear();
-            for (Card c : cards) {
-
+            for (Card c: cards) {
                 phasePart[part].addCards(cards);
             }
         }
