@@ -1,13 +1,14 @@
-
 /* @author Jacob  */
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+
 /* Represents the cards in a specific Player's possession. */
-public class Hand {
-	/* Data */
+public class Hand
+{
+/* Data */
 	/* Number of active and inactive cards in the hand */
 	int numOfCards;
 
@@ -17,27 +18,33 @@ public class Hand {
 	/* Cards the hand owns but cannot use (e.g. matched cards) */
 	private LinkedList<Card> inactiveCards;
 
-	/* Public methods */
+/* Public methods */
 
 	/* Constructor */
-	public Hand() {
+public Hand() {
 		this.numOfCards = 0;
 		this.activeCards = new LinkedList<Card>();
 		this.inactiveCards = new LinkedList<Card>();
 	}
 
-	/*
-	 * Looks at the activeCards for matches and returns all unique pairs of matching
-	 * cards. Games requiring a more sophisticated matching function would need to
-	 * override this function
-	 */
-	public LinkedList<Card> checkMatches() {
+	/* Looks at the activeCards for matches and returns all unique pairs
+	 * of matching cards. Games requiring a more sophisticated 
+	 * matching function would need to override this function */
+	public LinkedList<Card> checkMatches()
+	{
 		LinkedList<Card> matchingCards = new LinkedList<Card>();
 
-		for (int card1Index = 0; card1Index < this.activeCards.size(); ++card1Index) {
-			for (int card2Index = card1Index + 1; card2Index < this.activeCards.size(); ++card2Index) {
+		for (int card1Index = 0;
+		     card1Index < this.activeCards.size(); 
+		     ++card1Index)
+		{
+			for (int card2Index = card1Index + 1;
+			     card2Index < this.activeCards.size();
+			     ++card2Index)
+			{
 				Card card1 = this.activeCards.get(card1Index);
 				Card card2 = this.activeCards.get(card2Index);
+
 
 				if (false /* TODO card1.matches(card2) */) {
 					matchingCards.add(card1);
@@ -49,14 +56,17 @@ public class Hand {
 	}
 
 	/* Adds all the cards in the list to the active cards */
-	public void addCards(LinkedList<Card> cards) {
-		for (int index = 0; index < cards.size(); ++index) {
+	public void addCards(LinkedList<Card> cards)
+	{
+		for (int index = 0;
+		     index < cards.size();
+		     ++index)
+		{
 			Card cardToAdd = cards.get(index);
 			this.activeCards.add(cardToAdd);
 		}
 		updateNumOfCards();
 	}
-
 	/*
 	 * Removes all the cards in the list from the active cards, returning a list of
 	 * all cards successfully removed
@@ -75,15 +85,18 @@ public class Hand {
 		return removedCards;
 	}
 
-	/*
-	 * Transfers all the cards in the list from active cards to inactive cards and
-	 * returns a list of all cards successfully transferred
-	 */
-	public LinkedList<Card> transferActiveToInactive(LinkedList<Card> cards) {
+	/* Transfers all the cards in the list from active cards to inactive cards 
+	 * and returns a list of all cards successfully transferred */
+	public LinkedList<Card> transferActiveToInactive(LinkedList<Card> cards)
+	{
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
-		for (int index = 0; index < cards.size(); ++index) {
+		for (int index = 0;
+		     index < cards.size();
+		     ++index)
+		{
 			Card cardToTransfer = cards.get(index);
-			if (this.activeCards.remove(cardToTransfer)) {
+			if (this.activeCards.remove(cardToTransfer))
+			{
 				this.inactiveCards.add(cardToTransfer);
 				transferredCards.add(cardToTransfer);
 			}
@@ -91,15 +104,18 @@ public class Hand {
 		return transferredCards;
 	}
 
-	/*
-	 * Transfers all the cards in the list from inactive cards to active cards and
-	 * returns a list of all cards successfully transferred
-	 */
-	public LinkedList<Card> transferInactiveToActive(LinkedList<Card> cards) {
+	/* Transfers all the cards in the list from inactive cards to active cards
+	 * and returns a list of all cards successfully transferred */
+	public LinkedList<Card> transferInactiveToActive(LinkedList<Card> cards)
+	{
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
-		for (int index = 0; index < cards.size(); ++index) {
+		for (int index = 0;
+		     index < cards.size();
+		     ++index)
+		{
 			Card cardToTransfer = cards.get(index);
-			if (this.inactiveCards.remove(cardToTransfer)) {
+			if (this.inactiveCards.remove(cardToTransfer))
+			{
 				this.activeCards.add(cardToTransfer);
 				transferredCards.add(cardToTransfer);
 			}
@@ -137,10 +153,9 @@ public class Hand {
 	}
 
 	public boolean inHand(String cardName) {
-		String checker = (cardName.equals("WILD")) ? "0W" : cardName;
-		for (Card c : activeCards) {
-			if (c.getCardInfo().equals(checker)
-					|| c.getCardInfo().equals(checker.replaceAll("[0-9]", "") + checker.replaceAll("[^0-9]", ""))) {
+		String checker = (cardName.equals("WILD"))?"0W":cardName;
+		for(Card c:activeCards) {
+			if(c.getCardInfo().equals(checker)||c.getCardInfo().equals(checker.replaceAll("[0-9]","")+checker.replaceAll("[^0-9]",""))) {
 				return true;
 			}
 		}

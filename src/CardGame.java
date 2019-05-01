@@ -148,7 +148,13 @@ public class CardGame
 			newPile.addCardsOnTop(cc);
 			if(isValidPile(newPile)) {
 				piles.add(newPile);
+				for(Card c:focusPlayer.getHand().getActiveCards())
+					System.out.print(c.getCardInfo()+"  ");
+				System.out.println();
 				focusPlayer.getHand().removeCards(newPile.getCards());
+				for(Card c:focusPlayer.getHand().getActiveCards())
+					System.out.print(c.getCardInfo()+"  ");
+				System.out.println();
 				return true;
 			}
 			return false;
@@ -208,6 +214,7 @@ public class CardGame
 	 */
 	public boolean checkWinCondition(Player focusPlayer, String move)
 	{
+		//TODO extend into a specific game type (set of rules)
 		if(focusPlayer.getNumOfCards() == 0)
 			return true;
 		return false;
