@@ -99,7 +99,6 @@ public class Deck {
 		s = s.toUpperCase();
 		if(s.equals("WILD")||s.equals("0W"))
 			return true;
-		System.out.println(s);
 		String[] colors = {"R","G","B","Y"};
 		for(String color:colors) {
 			for(int i=1;i<=12;i++) {
