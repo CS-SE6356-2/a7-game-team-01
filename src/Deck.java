@@ -65,7 +65,22 @@ public class Deck {
 		return cards.get(i);
 	}
 	
-	public int getNumOfCards() {
+	public int size() {
 		return cards.size();
+	}
+
+	public boolean exists(String s) {
+		s = s.toUpperCase();
+		if(s.equals("WILD") || s.equals("0W"))
+			return true;
+		System.out.println(s);
+		String[] colors = {"R","G","B","Y"};
+		for(String color:colors) {
+			for(int i=1;i<=12;i++) {
+				if(s.equals(color+i)||s.equals(i+color))
+					return true;
+			}
+		}
+		return false;
 	}
 }

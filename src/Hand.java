@@ -109,8 +109,18 @@ public class Hand {
 		inactiveCards = new LinkedList<>(inactiveCards);
 	}
 
-	public int getNumOfCards() {
+	public int size() {
 		return activeCards.size() + inactiveCards.size();
+	}
+
+	public boolean inHand(String cardName) {
+		String checker = (cardName.equals("WILD")) ? "0W" : cardName;
+		for(Card c:activeCards) {
+			if(c.toString().equals(checker)||c.toString().equals(checker.replaceAll("[0-9]","")+checker.replaceAll("[^0-9]",""))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

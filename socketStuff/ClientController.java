@@ -14,6 +14,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javafx.application.Platform;
 
@@ -23,8 +24,8 @@ public class ClientController {
 	
 	//server stuff
 	ServerSocket serverSock;//the 'server' that will wait for a client socket to connect
-	ArrayList<Socket> clientSocks;
-	ArrayList<String> clientLabels;
+	List<Socket> clientSocks;
+	List<String> clientLabels;
 	ServerThread serverThread;
 	boolean isServer;
 	
@@ -201,35 +202,29 @@ class ClientThread extends Thread{
 					Platform.runLater(new Runnable() {
 					   @Override
 					   public void run() {
-						   
 						   //Update players messages about the previous move and whose turn it is
-						   if(mess[0].equals("turn"))
-						   {
+						   if (mess[0].equals("turn")) {
 							   //Tells the Client what move was made
 							   game.gui.infoLabel.setText(mess[1]);
 							   
 							   //Determines if this Client is the one to go next
-							   if(mess[2].equals(game.gui.yourName)) {
+							   if (mess[2].equals(game.gui.yourName)) {
 								   game.gui.turnLabel.setText("It's your turn");
-								   game.gui.root.getChildren().add(game.gui.playButton);
-							   }
-							   else {
+								   try {
+									   game.gui.root.getChildren().add(game.gui.playButton);
+								   } catch (Exception e) {}
+							   } else {
 								   game.gui.turnLabel.setText("It's " + mess[2] + "'s turn");
 							   }
-						   }
-						   //Update each Client GUI's list of cards
-						   else if(mess[0].equals("cards"))
-						   {
-							   if(!mess[1].equals(" "))
-							   {
-								   for(String card: mess[1].split(","))
+						   } else if(mess[0].equals("cards")) { // Update each Client GUI's list of cards
+							   if (!mess[1].equals(" ")) {
+								   for (String card: mess[1].split(","))
 									   tempList.add(new Card(card));
 								   game.gui.yourCards.setActiveCards(tempList);
 								   tempList.clear();
 							   }
 							   
-							   if(!mess[2].equals(" "))
-							   {
+							   if(!mess[2].equals(" ")) {
 								   for(String card: mess[2].split(","))
 									   tempList.add(new Card(card));
 								   game.gui.yourCards.setInactiveCards(tempList);
@@ -242,18 +237,15 @@ class ClientThread extends Thread{
 					   }
 					});
 				}
-				
 			} catch (IOException e) {
 				
 			}
 		}
-		/*DEBUG*/System.out.println(getId()+": Thread ended");
-		
+		/*DEBUG*/System.out.println(getId() + ": Thread ended");
 	}//end run
 }//end ServerListener
 
-class ServerThread extends Thread{
-	
+class ServerThread extends Thread {
 	ClientController game;
 	
 	public ServerThread(ClientController game) {
@@ -261,11 +253,9 @@ class ServerThread extends Thread{
 	}
 	
 	public void run() {
-		
 		try {
 			game.serverSock.setSoTimeout(1000);//sets time to wait for client to 1 second
-		}
-		catch(SocketException e){//thrown if the socket is bad
+		} catch (SocketException e) {//thrown if the socket is bad
 			Platform.runLater(new Runnable() {
 			    @Override
 			    public void run() {
@@ -274,7 +264,7 @@ class ServerThread extends Thread{
 			});
 		}
 		//1st Stage@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		while(game.gui.state.equals("hosting")) {
+		while (game.gui.state.equals("hosting")) {
 			try {
 				Socket sock = game.serverSock.accept();
 				if(!game.gui.state.equals("hosting")) return;
@@ -285,23 +275,20 @@ class ServerThread extends Thread{
 				game.clientSocks.add(sock);
 				/*DEBUG*/System.out.println(input);
 				
-			}
-			catch(SocketTimeoutException e){//no clients connect within the timeout delay
+			} catch(SocketTimeoutException ex) {//no clients connect within the timeout delay
 				//System.out.println("Nobody wanted to connect.");
 				//That's fine, we'll just keep waiting
-			}
-			catch(IOException e){
+			} catch(IOException ex) {
 				//System.out.println("IOException during accept()");
 				//oh well, won't have that client
-			}
-			catch(NullPointerException e){
+			} catch(NullPointerException ex) {
 				//System.out.println("IOException during accept()");
 				//oh well, won't have that client
 			}
 		
 			//update gui
 			String names = "";
-	    	for(int i = 0; i < game.clientSocks.size(); i++) {
+	    	for (int i = 0; i < game.clientSocks.size(); i++) {
 	    		if(game.clientSocks.get(i).isClosed()) {
 	    			game.clientSocks.remove(i);
 	    			game.clientLabels.remove(i);
@@ -312,7 +299,7 @@ class ServerThread extends Thread{
 	    		}
 	    	}
 	    	
-	    	for(int i = 0; i < game.clientSocks.size(); i++) {
+	    	for (int i = 0; i < game.clientSocks.size(); i++) {
 				try {
 					DataOutputStream out = new DataOutputStream(game.clientSocks.get(i).getOutputStream());
 					out.writeUTF(names);
@@ -324,12 +311,12 @@ class ServerThread extends Thread{
 		//2nd Stage@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		
 		//Don't move past if this thread's client hasn't gone in game yet
-		if(!game.gui.state.equals("game")) return;
+		if (!game.gui.state.equals("game")) return;
 		
 		//3rd Stage@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		
 		//Send the string "PLAY" to all of the clients
-		for(int i = 0; i < game.clientSocks.size(); i++) {
+		for (int i = 0; i < game.clientSocks.size(); i++) {
 			try {
 				DataOutputStream out = new DataOutputStream(game.clientSocks.get(i).getOutputStream());
 				out.writeUTF("PLAY");
@@ -342,25 +329,22 @@ class ServerThread extends Thread{
 		
 		//CREATE CARD GAME OBJECT
 		CardGame cardGame = new CardGame(game.clientLabels.size(), game.clientLabels, game.clientSocks, new File("cardlist.txt"));
-		cardGame.assignDealear(game.clientLabels.get(0));
 		PlayerQueue playerList = cardGame.sortPlayersInPlayOrder();
 		Player focusPlayer;
 		//4th Stage@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		
 		//Shuffle Cards
 		cardGame.shuffleCards();
-		//DEAL CARDS
-		cardGame.dealCards();
 		
 		//TENTATIVELY
 		//HAVE THE SERVER SEND LIST OF STRINGS TO PLAYERS FOR THEIR HAND OF CARDS
 		
-		while(game.gui.state.equals("game")) {
+		while (game.gui.state.equals("game")) {
 			//Get the player that goes next
 			focusPlayer = playerList.nextPlayer();
 			
 			//Group 1@@@@@Send Card information to each player what cards they currently have@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-			for(Player p: playerList) {
+			for (Player p: playerList) {
 				try {
 					DataOutputStream out = new DataOutputStream(p.getSock().getOutputStream());
 					//The players card list uses 3 delimiters
@@ -371,37 +355,44 @@ class ServerThread extends Thread{
 					//Adding in an extra first group to notify what kind of message is sent
 					//Add word "cards" to denote we are updating cards
 					out.writeUTF("cards;"+p.getCardListForUTF());
-				}
-				catch (IOException e) {}
+				} catch (IOException e) {}
 			}
 			
 			//Group 2@@@@@Message of what was the last move made and who goes next@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-			for(int i = 0; i < game.clientSocks.size(); i++) {
+			for (int i = 0; i < game.clientSocks.size(); i++) {
 				try {
+					System.out.println();
+					for(int count=2;count<cardGame.getPiles().size();count++) {
+						System.out.println("Pile "+(count-2)+":  "+cardGame.getPiles().get(count).toString());
+						count++;
+					}
+					System.out.print("YOUR HAND:  ");
+					for(Card c : focusPlayer.getActiveCards())
+						System.out.print(c.toString()+"  ");
+					System.out.println();
 					DataOutputStream out = new DataOutputStream(game.clientSocks.get(i).getOutputStream());
 					//Adding in an extra first group to notify what kind of message is sent
 					//Add word "turn" to denote we are updating labels about the move made/who goes next
 					out.writeUTF("turn;"+move+";"+focusPlayer.getTeamName());
-				}
-				catch (IOException e) {}
+				} catch (IOException e) {}
 			}
 			//Group 3@@@@@Receive the player's move@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 			try {
 				DataInputStream in = new DataInputStream(focusPlayer.getSock().getInputStream());
 				move = focusPlayer.getTeamName() + " played " + in.readUTF();
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				move = focusPlayer.getTeamName() + " was skipped by server";
 			}
 			//???A good place to put Card game logic????
 			//CHECK MOVE
 			boolean legal = cardGame.isLegalMove(focusPlayer, move);
-			if(!legal) {
-				//TODO extend to deal with illegal moves
+			if (!legal) {
+				System.out.println("INVALID MOVE / DRAWING CARD");
+				focusPlayer.getActiveCards().add(cardGame.draw());
 			}
 			
 			//Group 4@@@@@Tells Everyone what move was made@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-			for(int i = 0; i < game.clientSocks.size(); i++) {
+			for (int i = 0; i < game.clientSocks.size(); i++) {
 				try {
 					DataOutputStream out = new DataOutputStream(game.clientSocks.get(i).getOutputStream());
 					//Adding in an extra first group to notify what kind of message is sent
@@ -414,13 +405,10 @@ class ServerThread extends Thread{
 			//CHECK FOR WIN CONDITION
 
 			boolean win = cardGame.checkWinCondition(focusPlayer, move);
-			if(win) {
+			if (win) {
 				//TODO extend to some final state where focusPlayer won
 				System.out.println("A winner is "+focusPlayer.getTeamName());
-			}
-			
+			}	
 		}
-		
-		
 	}
 }//end ServerListener

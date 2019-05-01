@@ -18,6 +18,11 @@ public class Player {
 	// Socket that the player is connected on
 	private Socket playerSock;
 
+	// Phase of the current player for games like Phase 10, which players can be on different Phases
+	private int phase;
+
+	private boolean hasCompletedPhaseReq;
+
 	/* PUBLIC METHODS */
 	
 	/* Constructor */
@@ -44,7 +49,7 @@ public class Player {
 	 * @author Chris
 	 * @return
 	 */
-	public int getNumOfCards() { return hand.getNumOfCards(); }
+	public int getNumOfCards() { return hand.size(); }
 	/**
 	 * Returns this player's role
 	 * @author Chris
@@ -53,9 +58,27 @@ public class Player {
 	public void assignRole(String newRole) {
 		this.role = newRole;
 	}
+	public Hand getHand() {return hand;}
 	public String getRole() { return role; }
 	public String getTeamName() { return teamName; }
 	public Socket getSock() { return playerSock; }
+	
+	public void metPhase() {
+		hasCompletedPhaseReq = true;
+	}
+	public void resetPhase() {
+		hasCompletedPhaseReq = false;
+	}
+	public int getPhase() {
+		return phase;
+	}
+	public boolean hasPhaseBeenMet() {
+		return hasCompletedPhaseReq;
+	}
+	
+	public int getID() {
+		return phase;
+	}
 
 	/* Transfers all the cards in the list from the player's active cards
 	 * to their inactive cards and returns a list of all cards successfully

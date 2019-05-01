@@ -9,8 +9,16 @@ public class Cardpile {
 		cards = new LinkedList<>();
 	}
 	
-	public int getNumOfCards() {
+	public Cardpile(Cardpile o) {
+		cards = new LinkedList<>(o.cards);
+	}
+	
+	public int size() {
 		return cards.size();
+	}
+
+	public List<Card> getCards() {
+		return cards;
 	}
 	
 	// Returns the specified number of cards from the pile. The first element of the returned list is the first card drawn.
@@ -32,19 +40,23 @@ public class Cardpile {
 	}
 	
 	void addCardsOnTop(List<Card> cards) {
-		this.cards.addAll(0, cards);//adds cards to the front of the list
+		cards.addAll(0, cards); // adds cards to the front of the list
 	}
 	
 	void addCardsOnBot(List<Card> cards) {
-		this.cards.addAll(cards);//adds cards to the end of the list
+		cards.addAll(cards); // adds cards to the end of the list
+	}
+
+	void addCardAtIndex(Card card, int position) {
+		cards.add(position, card);
 	}
 
 	//shuffles the card pile, emulating how a physical deck of cards is shuffled
 	void shuffle() {
 		for(int i = 0;i<7;i++) {//repeats the shuffling mechanic several times to ensure the cards are well shuffled
 			//LinkedList<Card> half1 = (LinkedList<Card>) cards.subList(0,numOfCards/2); //Can't go up like this, changed to line below
-			List<Card> half1 = new LinkedList<>(cards.subList(0, getNumOfCards() / 2));//split the deck in half
-			List<Card> half2 = new LinkedList<>(cards.subList(getNumOfCards() / 2, cards.size()));
+			List<Card> half1 = new LinkedList<>(cards.subList(0, size() / 2));//split the deck in half
+			List<Card> half2 = new LinkedList<>(cards.subList(size() / 2, cards.size()));
 			cards.clear();
 			
 			while(!half1.isEmpty() && !half2.isEmpty()) {//while there are cards in both halfs
@@ -62,7 +74,7 @@ public class Cardpile {
 	
 	@Override
 	public String toString() {
-		if (getNumOfCards() == 0)
+		if (size() == 0)
 			return "";
 		
 		final StringBuilder ret = new StringBuilder();
@@ -70,7 +82,7 @@ public class Cardpile {
 			Card card = cards.get(0);
 			ret.append(card.getVal()).append(" ").append(card.getCategory());
 		}
-		for (int i = 1; i < getNumOfCards(); i++) {	// for each card in the pile, print its information
+		for (int i = 1; i < size(); i++) {	// for each card in the pile, print its information
 			ret.append("\n");
 			Card card = cards.get(i);
 			ret.append(card.getVal()).append(" ").append(card.getCategory());
