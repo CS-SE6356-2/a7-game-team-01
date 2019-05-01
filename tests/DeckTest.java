@@ -121,9 +121,8 @@ public class DeckTest {
 	//Helper method to print all the cards in a deck, given the
 	//deck and its size
 	static void checkDeck(Deck d, int numCards) {
-		for(int i = 0; i < numCards; i ++)
-		{
-			d.getCardAt(i).printCard();
+		for(int i = 0; i < numCards; i ++) {
+			System.out.println(d.getCardAt(i));
 		}
 	}
 	//Helper method to test the deck. Checks the cards, shuffles, checks again,
