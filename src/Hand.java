@@ -20,8 +20,8 @@ public class Hand {
 	/* Public methods */
 
 	/* Constructor */
-	public Hand()
-	{
+	public Hand() {
+		this.numOfCards = 0;
 		this.activeCards = new LinkedList<Card>();
 		this.inactiveCards = new LinkedList<Card>();
 	}
@@ -39,8 +39,7 @@ public class Hand {
 				Card card1 = this.activeCards.get(card1Index);
 				Card card2 = this.activeCards.get(card2Index);
 
-				if (card1.equals(card2))
-				{
+				if (false /* TODO card1.matches(card2) */) {
 					matchingCards.add(card1);
 					matchingCards.add(card2);
 				}
@@ -50,11 +49,12 @@ public class Hand {
 	}
 
 	/* Adds all the cards in the list to the active cards */
-	public void addCards(List<Card> cards) {
+	public void addCards(LinkedList<Card> cards) {
 		for (int index = 0; index < cards.size(); ++index) {
 			Card cardToAdd = cards.get(index);
 			this.activeCards.add(cardToAdd);
 		}
+		updateNumOfCards();
 	}
 
 	/*
@@ -71,6 +71,7 @@ public class Hand {
 				}
 			}
 		}
+		updateNumOfCards();
 		return removedCards;
 	}
 
@@ -106,27 +107,33 @@ public class Hand {
 		return transferredCards;
 	}
 
-/* Getters */
+	/* Getters */
 	public LinkedList<Card> getActiveCards() {
-		return activeCards;
-	}
-	
-	public LinkedList<Card> getInactiveCards() {
-		return inactiveCards;
-	}
-	
-	//These both are used for the hand used in the ClientGUI
-	//Both make shallow copies of the lists
-	public void setActiveCards(List<Card> activeCards) {
-		activeCards = new LinkedList<Card>(activeCards);
-	}
-	
-	public void setInactiveCards(List<Card> inactiveCards) {
-		inactiveCards = new LinkedList<Card>(inactiveCards);
+		return this.activeCards;
 	}
 
-	public int size() {
-		return activeCards.size() + inactiveCards.size();
+	public LinkedList<Card> getInactiveCards() {
+		return this.inactiveCards;
+	}
+
+	// These both are used for the hand used in the ClientGUI
+	// Both make shallow copies of the lists
+	public void setActiveCards(List<Card> activeCards) {
+		this.activeCards = new LinkedList<Card>(activeCards);
+	}
+
+	public void setInactiveCards(List<Card> inactiveCards) {
+		this.inactiveCards = new LinkedList<Card>(inactiveCards);
+	}
+
+	public int getNumOfCards() {
+		return numOfCards;
+	}
+
+	/* Private methods */
+	/* Used to recalculate numOfCards when cards are added or removed */
+	private void updateNumOfCards() {
+		numOfCards = this.activeCards.size() + this.inactiveCards.size();
 	}
 
 	public boolean inHand(String cardName) {
@@ -138,22 +145,5 @@ public class Hand {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Hand))
-			return false;
-		Hand other = (Hand) obj;
-		return Objects.equals(activeCards, other.activeCards) && Objects.equals(inactiveCards, other.inactiveCards);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(activeCards, inactiveCards);
 	}
 }

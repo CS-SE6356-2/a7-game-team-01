@@ -17,8 +17,12 @@ public class CardGameTest {
 		CardGame game = new CardGame(playerNames.size(),playerNames,socks,new File("cardlist.txt"));
 		//createPlayers is tested within the constructor
 		
+		//Assign player 2 as dealer
+		game.assignDealear("Player 2");
 		//Shuffle the cards
 		game.shuffleCards();
+		//Deal the cards
+		game.dealCards();
 		
 		//Get the list of cards from each player and see they have been sorted as the dealer goes last
 		for(Player p: game.sortPlayersInPlayOrder())

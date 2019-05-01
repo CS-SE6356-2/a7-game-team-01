@@ -130,18 +130,18 @@ public class DeckTest {
 	//shuffles, and checks again
 	static void testDeck(Deck d) {
 		//Printing the number of cards
-		System.out.println("There are " + d.size() + " cards in the deck");
-		checkDeck(d, d.size());
+		System.out.println("There are " + d.getNumOfCards() + " cards in the deck");
+		checkDeck(d, d.getNumOfCards());
 		//newline for formatting
 		System.out.print("\n");
 		
 		d.shuffle();
-		checkDeck(d, d.size());
+		checkDeck(d, d.getNumOfCards());
 		//newline for formatting
 		System.out.print("\n");
 		
 		d.shuffle();
-		checkDeck(d, d.size());
+		checkDeck(d, d.getNumOfCards());
 		//newline for formatting
 		System.out.println("\n");
 	}

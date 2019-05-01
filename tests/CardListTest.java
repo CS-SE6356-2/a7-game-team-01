@@ -29,7 +29,7 @@ public class CardListTest {
     	final String[] categories = new String[] { "R", "G", "B", "Y" };
     	
     	final int[] categoryCount = new int[categories.length];
-    	for (int i = 0; i < deck.size(); ++i) {
+    	for (int i = 0; i < deck.getNumOfCards(); ++i) {
     		final Card card = deck.getCardAt(i);
     		final int categoryNum = Arrays.asList(categories).indexOf(card.getCategory());
     		assertTrue(categoryNum >= 0); // each card must have a valid category
@@ -53,7 +53,7 @@ public class CardListTest {
     	final String[] values = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "W", "S" };
     	
     	final int[] valueCount = new int[values.length];
-    	for (int i = 0; i < deck.size(); ++i) {
+    	for (int i = 0; i < deck.getNumOfCards(); ++i) {
     		final Card card = deck.getCardAt(i);
     		final int valueNum = Arrays.asList(values).indexOf(card.getVal());
     		assertTrue(valueNum >= 0); // each card must have a valid value
