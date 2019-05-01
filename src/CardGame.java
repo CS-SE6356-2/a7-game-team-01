@@ -162,8 +162,8 @@ public class CardGame
 		if(c.size() < 4)
 			return false;
 		List<Card> cards = c.getCards();
-		for(int i=0;i<c.size()-1;i++) {
-			if(!(Integer.parseInt(cards.get(i).getVal())<Integer.parseInt(cards.get(i+1).getVal())||cards.get(i).getCategory().equals("W")||cards.get(i+1).getCategory().equals("W")))
+		for (int i = 0; i < c.size() - 1; i++) {
+			if (!(Integer.parseInt(cards.get(i).getVal()) < Integer.parseInt(cards.get(i + 1).getVal()) || cards.get(i).isWildCard() || cards.get(i + 1).isWildCard()))
 				return false;
 		}
 		return true;
@@ -173,10 +173,10 @@ public class CardGame
 		if(c.size() < 2)
 			return false;
 		List<Card> cards = c.getCards();
-		for(int i = 0; i < c.size(); i++) {
-			for(int j = 0; j < c.size(); j++)
-			if(!(Integer.parseInt(cards.get(i).getVal()) == Integer.parseInt(cards.get(j).getVal()) || cards.get(i).getCategory().equals("W")||cards.get(j).getCategory().equals("W")))
-				return false;
+		for (int i = 0; i < c.size(); i++) {
+			for (int j = 0; j < c.size(); j++)
+				if (!(Integer.parseInt(cards.get(i).getVal()) == Integer.parseInt(cards.get(j).getVal()) || cards.get(i).isWildCard() || cards.get(j).isWildCard()))
+					return false;
 		}
 		return true;
 	}
@@ -185,10 +185,10 @@ public class CardGame
 		if(c.size() < 7)
 			return false;
 		List<Card> cards = c.getCards();
-		for(int i=0;i<c.size();i++) {
-			for(int j=0;j<c.size();j++)
-			if(!(cards.get(i).getCategory().equals(cards.get(j).getCategory()) || cards.get(i).getCategory().equals("W")||cards.get(j).getCategory().equals("W")))
-				return false;
+		for (int i = 0; i < c.size(); i++) {
+			for (int j = 0; j < c.size(); j++)
+				if (!(cards.get(i).getCategory().equals(cards.get(j).getCategory()) || cards.get(i).isWildCard() || cards.get(j).isWildCard()))
+					return false;
 		}
 		return true;
 	}
