@@ -2,7 +2,6 @@
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 
 /* Represents the cards in a specific Player's possession. */
@@ -21,7 +20,8 @@ public class Hand
 /* Public methods */
 
 	/* Constructor */
-public Hand() {
+	public Hand()
+	{
 		this.numOfCards = 0;
 		this.activeCards = new LinkedList<Card>();
 		this.inactiveCards = new LinkedList<Card>();
@@ -45,8 +45,8 @@ public Hand() {
 				Card card1 = this.activeCards.get(card1Index);
 				Card card2 = this.activeCards.get(card2Index);
 
-
-				if (false /* TODO card1.matches(card2) */) {
+				if (false /*TODO card1.matches(card2)*/)
+				{
 					matchingCards.add(card1);
 					matchingCards.add(card2);
 				}
@@ -67,18 +67,20 @@ public Hand() {
 		}
 		updateNumOfCards();
 	}
-	/*
-	 * Removes all the cards in the list from the active cards, returning a list of
-	 * all cards successfully removed
-	 */
-	public LinkedList<Card> removeCards(List<Card> list) {
+
+	/* Removes all the cards in the list from the active cards,
+	 * returning a list of all cards successfully removed */
+	public LinkedList<Card> removeCards(LinkedList<Card> cards)
+	{
 		LinkedList<Card> removedCards = new LinkedList<Card>();
-		for (int index = 0; index < list.size(); ++index) {
-			for (int j = 0; j < activeCards.size(); j++) {
-				if (list.get(index).getCardInfo().equals(activeCards.get(j).getCardInfo())) {
-					removedCards.add(activeCards.remove(j));
-					break;
-				}
+		for (int index = 0;
+		     index < cards.size();
+		     ++index)
+		{
+			Card cardToRemove = cards.get(index);
+			if (this.activeCards.remove(cardToRemove))
+			{
+				removedCards.add(cardToRemove);
 			}
 		}
 		updateNumOfCards();
@@ -123,32 +125,37 @@ public Hand() {
 		return transferredCards;
 	}
 
-	/* Getters */
-	public LinkedList<Card> getActiveCards() {
+/* Getters */
+	public LinkedList<Card> getActiveCards()
+	{
 		return this.activeCards;
 	}
-
-	public LinkedList<Card> getInactiveCards() {
+	
+	public LinkedList<Card> getInactiveCards()
+	{
 		return this.inactiveCards;
 	}
-
-	// These both are used for the hand used in the ClientGUI
-	// Both make shallow copies of the lists
-	public void setActiveCards(List<Card> activeCards) {
+	
+	//These both are used for the hand used in the ClientGUI
+	//Both make shallow copies of the lists
+	public void setActiveCards(List<Card> activeCards)
+	{
 		this.activeCards = new LinkedList<Card>(activeCards);
 	}
-
-	public void setInactiveCards(List<Card> inactiveCards) {
+	public void setInactiveCards(List<Card> inactiveCards)
+	{
 		this.inactiveCards = new LinkedList<Card>(inactiveCards);
 	}
 
-	public int getNumOfCards() {
+	public int getNumOfCards()
+	{
 		return numOfCards;
 	}
 
-	/* Private methods */
+/* Private methods */
 	/* Used to recalculate numOfCards when cards are added or removed */
-	private void updateNumOfCards() {
+	private void updateNumOfCards()
+	{
 		numOfCards = this.activeCards.size() + this.inactiveCards.size();
 	}
 
