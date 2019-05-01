@@ -20,84 +20,68 @@
 		Shuffles the deck using Fisher-Yates
 	getCardAt(int i)
 		Gets the card at a given index
-	getNumOfCards()
+	size()
 		Gets the number of cards in the deck
-	
-	TODO:
-	Add customization options to reading the cardList for easier processing.
-	Example: C as the header so the program can generate cards with values in
-	(values X category). Would make it easier to write a file for decks like the
-	typical 52 card deck.
 */
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
 
 public class Deck {
 	//DATA FIELDS
 	int numOfCards = 0;
-	ArrayList<Card> cards = new ArrayList<Card>();
+	List<Card> cards = new ArrayList<Card>();
 	
 	/****	CONSTRUCTORS	****/
-	public Deck(File cardList)
-	{
+	public Deck(File cardList) {
 		//Creating a scanner to read in the cardList
-		Scanner input = new Scanner(System.in);
-		try {
-			input = new Scanner(cardList);
-		}	catch(FileNotFoundException e) {
+		try (Scanner input = new Scanner(cardList)) {
+			//Initializing Strings to hold the value and category of cards
+			String val;
+			String category;
+			
+			//Read in all the cards for deckSize
+			while(input.hasNextLine())
+			{
+				//Getting the value, then finishing the line with category
+				val = input.next();
+				category = input.nextLine();
+				
+				//putting the card in cards[] in order of appearance
+				cards.add(new Card(val, category));
+				//Incrementing the number of cards
+				numOfCards ++;
+			}
+		} catch (IOException e) {
 			//File not found, output error and exit
 			System.out.println("cardList file not found!");
 			System.exit(1);
 		}
-		
-		//Initializing Strings to hold the value and category of cards
-		String val;
-		String category;
-		
-		//Read in all the cards for deckSize
-		while(input.hasNextLine())
-		{
-			//Getting the value, then finishing the line with category
-			val = input.next();
-			category = input.nextLine();
-			
-			//putting the card in cards[] in order of appearance
-			cards.add(new Card(val, category));
-			//Incrementing the number of cards
-			numOfCards ++;
-		}
 	}
+	
 	/****	FUNCTIONS	****/
-	void shuffle()
-	{
-		//Making a Random object to run Fisher-Yates shuffle
-		Random rand = new Random();
-		
-		//For loop to run over each item in the array
-		for(int i = numOfCards-1; i > 0; i --)
-		{
-			//Getting a random index 0 <= j < i
-			int j = rand.nextInt(i+1);
-			Card temp = cards.get(i);
-			cards.set(i, cards.get(j));
-			cards.set(j, temp);
-		}
+	void shuffle() {
+		Collections.shuffle(cards);
 	}
+	
 	/****	GETTERS/SETTERS	****/
 	//getCardAt returns the ith card, starting from 0
-	public Card getCardAt(int i)
-	{
+	public Card getCardAt(int i) {
 		return cards.get(i);
 	}
-	//Self-explanatory
-	public int getNumOfCards()
-	{
-		return numOfCards;
+	
+	public int size() {
+		return cards.size();
 	}
+
 	public boolean exists(String s) {
 		s = s.toUpperCase();
-		if(s.equals("WILD")||s.equals("0W"))
+		if(s.equals("WILD") || s.equals("0W"))
 			return true;
 		String[] colors = {"R","G","B","Y"};
 		for(String color:colors) {

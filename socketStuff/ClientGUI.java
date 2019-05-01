@@ -11,8 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ClientGUI extends Application{
-	
+public class ClientGUI extends Application {
 	ClientController game = null;
 	
 	String state;
@@ -288,7 +287,7 @@ public class ClientGUI extends Application{
 	
 	//call this to end the clients turn
 	//pass the string to write to the server
-	//returns true if the message was sucesesfully sent without error
+	//returns true if the message was successfully sent without error
 	boolean endTurn(String messageToServer) {
 		boolean success = false;
 		int attempts = 0;//keeps track of attempts
@@ -306,17 +305,10 @@ public class ClientGUI extends Application{
 		launch();
 	}
 	
-	public boolean validateName(String name)
-	{
+	public boolean validateName(String name) {
 		for(char c: name.toCharArray())
 			if(!(Character.isLetterOrDigit(c)||Character.isSpaceChar(c)))	//If it is not the case that the character is a-zA-Z0-9 or ' '
 				return false;
-		return true;
-						
-				
+		return true;			
 	}
-	
 }//end of GUI
-
-
-

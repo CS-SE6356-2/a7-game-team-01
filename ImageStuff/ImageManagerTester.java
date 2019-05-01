@@ -1,12 +1,10 @@
 import java.io.File;
-import javafx.application.Application; 
+import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.*;
-import javafx.scene.*;
-import javafx.scene.layout.*;
-import javafx.scene.control.*;
-import javafx.geometry.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class ImageManagerTester extends Application {
 	@Override
