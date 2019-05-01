@@ -17,8 +17,8 @@ public class CardGame
 		piles = new Cardpile[2]; // Create the list of piles, will give amount that fits a specific card game
 		
 		// Create Card Piles
-		piles[0] = new Cardpile("Draw");
-		piles[1] = new Cardpile("Used");
+		piles[0] = new Cardpile();
+		piles[1] = new Cardpile();
 		
 		// Create Players
 		createPlayers(playerNames, clientSocks);

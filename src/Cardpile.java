@@ -2,17 +2,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Cardpile {
-	private String pileName;
 	private List<Card> cards; // front of the list is the top of the pile
 	
-	// default constructor
-	public Cardpile() {
-		this("Pile");
-	}
-	
 	// Constructor, sets the name of the pile and initializes the pile to be empty
-	public Cardpile(String name) {
-		pileName = name;
+	public Cardpile() {
 		cards = new LinkedList<>();
 	}
 	
