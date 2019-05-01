@@ -37,16 +37,16 @@ public class CardGame
 		LinkedList<Card> temp = new LinkedList<Card>();
 		for(Player player: players)
 		{
-			for(;temp.size() < 7; currentCard++)			//Get a list of cards that will be of even size to a player. UNO starts off with players having 7 cards
-				temp.add(cardDeck.cards.get(currentCard));		//add card reference to list
-				//Give players their cards
+			for(; temp.size() < 7; currentCard++) // Get a list of cards that will be of even size to a player. UNO starts off with players having 7 cards
+				temp.add(cardDeck.getCardAt(currentCard)); // add card reference to list
+				// Give players their cards
 			player.addCards(temp);
 			temp.clear();									//Clear the list so we can give the next player their cards
 		}
 		
 		//Give rest of cards to draw pile
-		for(;currentCard < cardDeck.numOfCards; currentCard++)
-			temp.add(cardDeck.cards.get(currentCard));
+		for (; currentCard < cardDeck.getNumOfCards(); currentCard++)
+			temp.add(cardDeck.getCardAt(currentCard));
 		piles[0].addCardsOnTop(temp);
 		temp.clear();
 		
