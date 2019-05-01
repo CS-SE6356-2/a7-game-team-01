@@ -207,7 +207,6 @@ public class CardGame
 	 */
 	public boolean checkWinCondition(Player focusPlayer, String move)
 	{
-		//TODO extend into a specific game type (set of rules)
 		if(focusPlayer.getNumOfCards() == 0)
 			return true;
 		return false;

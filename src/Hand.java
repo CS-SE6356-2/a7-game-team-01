@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /* Represents the cards in a specific Player's possession. */
 public class Hand {
-/* Data */
+	/* DATA */
 
 	/* All the cards that are able to be played */
 	private LinkedList<Card> activeCards;
@@ -14,7 +14,7 @@ public class Hand {
 	/* Cards the hand owns but cannot use (e.g. matched cards) */
 	private LinkedList<Card> inactiveCards;
 
-/* Public methods */
+	/* PUBLIC METHODS */
 
 	/* Constructor */
 	public Hand()
@@ -23,21 +23,16 @@ public class Hand {
 		this.inactiveCards = new LinkedList<Card>();
 	}
 
-	/* Looks at the activeCards for matches and returns all unique pairs
-	 * of matching cards. Games requiring a more sophisticated 
-	 * matching function would need to override this function */
-	public LinkedList<Card> checkMatches()
-	{
+	/*
+	 * Looks at the activeCards for matches and returns all unique pairs of matching
+	 * cards. Games requiring a more sophisticated matching function would need to
+	 * override this function
+	 */
+	public LinkedList<Card> checkMatches() {
 		LinkedList<Card> matchingCards = new LinkedList<Card>();
 
-		for (int card1Index = 0;
-		     card1Index < this.activeCards.size(); 
-		     ++card1Index)
-		{
-			for (int card2Index = card1Index + 1;
-			     card2Index < this.activeCards.size();
-			     ++card2Index)
-			{
+		for (int card1Index = 0; card1Index < this.activeCards.size(); ++card1Index) {
+			for (int card2Index = card1Index + 1; card2Index < this.activeCards.size(); ++card2Index) {
 				Card card1 = this.activeCards.get(card1Index);
 				Card card2 = this.activeCards.get(card2Index);
 
@@ -59,30 +54,32 @@ public class Hand {
 		}
 	}
 
-	/* Removes all the cards in the list from the active cards,
-	 * returning a list of all cards successfully removed */
-	public LinkedList<Card> removeCards(List<Card> cards) {
+	/*
+	 * Removes all the cards in the list from the active cards, returning a list of
+	 * all cards successfully removed
+	 */
+	public LinkedList<Card> removeCards(List<Card> list) {
 		LinkedList<Card> removedCards = new LinkedList<Card>();
-		for (int index = 0; index < cards.size(); ++index) {
-			Card cardToRemove = cards.get(index);
-			if (this.activeCards.remove(cardToRemove)) {
-				removedCards.add(cardToRemove);
+		for (int index = 0; index < list.size(); ++index) {
+			for (int j = 0; j < activeCards.size(); j++) {
+				if (list.get(index).getCardInfo().equals(activeCards.get(j).getCardInfo())) {
+					removedCards.add(activeCards.remove(j));
+					break;
+				}
 			}
 		}
 		return removedCards;
 	}
 
-	/* Transfers all the cards in the list from active cards to inactive cards 
-	 * and returns a list of all cards successfully transferred */
+	/*
+	 * Transfers all the cards in the list from active cards to inactive cards and
+	 * returns a list of all cards successfully transferred
+	 */
 	public LinkedList<Card> transferActiveToInactive(LinkedList<Card> cards) {
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
-		for (int index = 0;
-		     index < cards.size();
-		     ++index)
-		{
+		for (int index = 0; index < cards.size(); ++index) {
 			Card cardToTransfer = cards.get(index);
-			if (this.activeCards.remove(cardToTransfer))
-			{
+			if (this.activeCards.remove(cardToTransfer)) {
 				this.inactiveCards.add(cardToTransfer);
 				transferredCards.add(cardToTransfer);
 			}
@@ -90,8 +87,10 @@ public class Hand {
 		return transferredCards;
 	}
 
-	/* Transfers all the cards in the list from inactive cards to active cards
-	 * and returns a list of all cards successfully transferred */
+	/*
+	 * Transfers all the cards in the list from inactive cards to active cards and
+	 * returns a list of all cards successfully transferred
+	 */
 	public LinkedList<Card> transferInactiveToActive(LinkedList<Card> cards) {
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
 		for (int index = 0; index < cards.size(); ++index) {
@@ -129,8 +128,9 @@ public class Hand {
 
 	public boolean inHand(String cardName) {
 		String checker = (cardName.equals("WILD")) ? "0W" : cardName;
-		for(Card c:activeCards) {
-			if(c.toString().equals(checker)||c.toString().equals(checker.replaceAll("[0-9]","")+checker.replaceAll("[^0-9]",""))) {
+		for (Card c : activeCards) {
+			if (c.getCardInfo().equals(checker)
+					|| c.getCardInfo().equals(checker.replaceAll("[0-9]", "") + checker.replaceAll("[^0-9]", ""))) {
 				return true;
 			}
 		}

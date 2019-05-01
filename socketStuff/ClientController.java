@@ -381,7 +381,6 @@ class ServerThread extends Thread {
 				System.out.println();
 				for(int count=2;count<cardGame.getPiles().size();count++) {
 					System.out.println("Pile "+(count-2)+":  "+cardGame.getPiles().get(count).toString());
-					count++;
 				}
 				System.out.print("YOUR HAND:  ");
 				for(Card c : focusPlayer.getActiveCards())
