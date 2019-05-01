@@ -94,14 +94,10 @@ public class Hand {
 	 * and returns a list of all cards successfully transferred */
 	public LinkedList<Card> transferInactiveToActive(LinkedList<Card> cards) {
 		LinkedList<Card> transferredCards = new LinkedList<Card>();
-		for (int index = 0;
-		     index < cards.size();
-		     ++index)
-		{
+		for (int index = 0; index < cards.size(); ++index) {
 			Card cardToTransfer = cards.get(index);
-			if (this.inactiveCards.remove(cardToTransfer))
-			{
-				this.activeCards.add(cardToTransfer);
+			if (inactiveCards.remove(cardToTransfer)) {
+				activeCards.add(cardToTransfer);
 				transferredCards.add(cardToTransfer);
 			}
 		}
@@ -109,22 +105,22 @@ public class Hand {
 	}
 
 /* Getters */
-	public LinkedList<Card> getActiveCards() {
+	public List<Card> getActiveCards() {
 		return activeCards;
 	}
 	
-	public LinkedList<Card> getInactiveCards() {
+	public List<Card> getInactiveCards() {
 		return inactiveCards;
 	}
 	
 	//These both are used for the hand used in the ClientGUI
 	//Both make shallow copies of the lists
 	public void setActiveCards(List<Card> activeCards) {
-		activeCards = new LinkedList<Card>(activeCards);
+		activeCards = new LinkedList<>(activeCards);
 	}
 	
 	public void setInactiveCards(List<Card> inactiveCards) {
-		inactiveCards = new LinkedList<Card>(inactiveCards);
+		inactiveCards = new LinkedList<>(inactiveCards);
 	}
 
 	public int size() {

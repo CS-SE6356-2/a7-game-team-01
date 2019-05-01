@@ -107,19 +107,19 @@ public class CardGame
 		move = move.replaceAll("WILD","0W");
 		move = move.replaceAll("W0","0W");
 		String[] params = move.trim().split(" ");
-		if(params.length<2)
+		if(params.length < 2)
 			return false;
 		// placing a new card onto an existing pile
-		if(focusPlayer.hasPhaseBeenMet()&&params[1].equals("Pile")&&inHand(params[0],focusPlayer.getHand())) {
+		if(focusPlayer.hasPhaseBeenMet() && params[1].equals("Pile") && inHand(params[0], focusPlayer.getHand())) {
 			int pile, position;
 			try {
 				pile = Integer.parseInt(params[2]);
 				position = Integer.parseInt(params[4]);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				return false;
 			}
 			// We have a valid pile, position, and card   so we just need to check the validity of the move
-			return isValidPlacement(params[0],pile,position);
+			return isValidPlacement(params[0], pile, position);
 		// creating a new pile
 		} else {
 			for(int i = 0; i < params.length; i++)
@@ -127,20 +127,20 @@ public class CardGame
 					return false;
 			
 			Cardpile newPile = new Cardpile();
-			List<Card> cc = new LinkedList<Card>();
-			for(int i=0;i<params.length;i++) {
-				cc.add(new Card(params[i].replaceAll("[^0-9]",""),params[i].replaceAll("[0-9]","")));
+			List<Card> cc = new LinkedList<>();
+			for (int i = 0; i < params.length; i++) {
+				cc.add(new Card(params[i].replaceAll("[^0-9]",""), params[i].replaceAll("[0-9]","")));
 			}
 			
 			newPile.addCardsOnTop(cc);
 			if(isValidPile(newPile)) {
 				piles.add(newPile);
-				for(Card c:focusPlayer.getHand().getActiveCards())
-					System.out.print(c.getCardInfo()+"  ");
+				for (Card c:focusPlayer.getHand().getActiveCards())
+					System.out.print(c.getCardInfo() + "  ");
 				System.out.println();
 				focusPlayer.getHand().removeCards(newPile.getCards());
-				for(Card c:focusPlayer.getHand().getActiveCards())
-					System.out.print(c.getCardInfo()+"  ");
+				for (Card c:focusPlayer.getHand().getActiveCards())
+					System.out.print(c.getCardInfo() + "  ");
 				System.out.println();
 				return true;
 			}
@@ -149,17 +149,17 @@ public class CardGame
 	}
 	
 	public boolean isValidPile(Cardpile c) {
-		return isRun(c)||isSet(c)||isAllOneColor(c);
+		return isRun(c) || isSet(c) || isAllOneColor(c);
 	}
 	
 	public boolean isValidPlacement(String cardName, int pile, int position) {
 		Cardpile newPile = new Cardpile(piles.get(pile));
-		newPile.addCardAtIndex(new Card(cardName.substring(0,1),cardName.substring(1,2)),position);
+		newPile.addCardAtIndex(new Card(cardName.substring(0, 1), cardName.substring(1, 2)), position);
 		return isValidPile(newPile);
 	}
 	
 	public boolean isRun(Cardpile c) {
-		if(c.size()<4)
+		if(c.size() < 4)
 			return false;
 		List<Card> cards = c.getCards();
 		for(int i=0;i<c.size()-1;i++) {
@@ -182,7 +182,7 @@ public class CardGame
 	}
 	
 	public boolean isAllOneColor(Cardpile c) {
-		if(c.size()<7)
+		if(c.size() < 7)
 			return false;
 		List<Card> cards = c.getCards();
 		for(int i=0;i<c.size();i++) {
