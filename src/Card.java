@@ -59,8 +59,4 @@ public class Card {
 	String getCardInfo() {
 		return "" + value + category;
 	}
-	
-	public boolean isWildCard() {
-		return value.startsWith("W") || category.startsWith("W");
-	}
 }

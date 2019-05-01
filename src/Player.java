@@ -107,12 +107,14 @@ public class Player
 	}
 
 /* Getters */
-	public List<Card> getActiveCards() {
-		return hand.getActiveCards();
+	public LinkedList<Card> getActiveCards()
+	{
+		return this.hand.getActiveCards();
 	}
 
-	public List<Card> getInactiveCards() {
-		return hand.getInactiveCards();
+	public LinkedList<Card> getInactiveCards()
+	{
+		return this.hand.getInactiveCards();
 	}
 	
 	public int getID() {
