@@ -1,7 +1,6 @@
 /* @author Jacob */
 
 import java.util.LinkedList;
-import java.util.List;
 import java.net.Socket;
 
 /* Represents one of the people playing the game */
@@ -22,10 +21,10 @@ public class Player
 
 	// Phase of the current player for games like Phase 10, which players can be on different Phases
 	private int phase;
-
+	
 	private boolean hasCompletedPhaseReq;
-
-	/* PUBLIC METHODS */
+	
+/* Public methods */
 	
 	/* Constructor */
 	public Player(String cTeamName, String cRole, Socket cSock)
@@ -39,14 +38,16 @@ public class Player
 	}
 
 	/* Adds all the cards in the list to the player's active cards */
-	public void addCards(List<Card> cards) {
-		hand.addCards(cards);
+	public void addCards(LinkedList<Card> cards)
+	{
+		this.hand.addCards(cards);
 	}
 
 	/* Removes all the cards in the list from the player's active cards
 	 * and returns a list of all cards successfully removed */
-	public LinkedList<Card> removeCards(List<Card> cards) {
-		return hand.removeCards(cards);
+	public LinkedList<Card> removeCards(LinkedList<Card> cards)
+	{
+		return this.hand.removeCards(cards);
 	}
 	
 	/**
@@ -54,7 +55,7 @@ public class Player
 	 * @author Chris
 	 * @return
 	 */
-	public int getNumOfCards() { return hand.size(); }
+	public int getNumOfCards() {return hand.getNumOfCards();}
 	/**
 	 * Returns this player's role
 	 * @author Chris
@@ -63,11 +64,10 @@ public class Player
 	public void assignRole(String newRole) {
 		this.role = newRole;
 	}
-	
-	public Hand getHand() { return hand; }
-	public String getRole() { return role; }
-	public String getTeamName() { return teamName; }
-	public Socket getSock() { return playerSock; }
+	public Hand getHand() {return hand;}
+	public String getRole() {return role;}
+	public String getTeamName() {return teamName;}
+	public Socket getSock() {return playerSock;}
 	
 	public void metPhase() {
 		hasCompletedPhaseReq = true;
@@ -81,11 +81,6 @@ public class Player
 	public boolean hasPhaseBeenMet() {
 		return hasCompletedPhaseReq;
 	}
-	
-	public int getID() {
-		return phase;
-	}
-
 	/* Transfers all the cards in the list from the player's active cards
 	 * to their inactive cards and returns a list of all cards successfully
 	 * transferred */
@@ -120,6 +115,9 @@ public class Player
 		return hand.getInactiveCards();
 	}
 	
+	public int getID() {
+		return phase;
+	}
 	/**
 	 * The players card list uses 3 delimiters
 	 *	The ';' delimits the active list form the inactive list. ActiveCards|InactiveCards
@@ -128,21 +126,26 @@ public class Player
 	 * @author Chris
 	 * @return
 	 */
-	public String getCardListForUTF() {
+	public String getCardListForUTF()
+	{
 		StringBuilder cardList = new StringBuilder();
 		
-		if (getActiveCards().size() > 0) {
+		if(getActiveCards().size()>0)
+		{
 			for(Card card: getActiveCards())
 				cardList.append(card.getVal()+""+card.getCategory()+",");
 			cardList.setCharAt(cardList.lastIndexOf(","), ';');
-		} else
+		}
+		else
 			cardList.append(" ;");
 		
-		if (getInactiveCards().size() > 0) {
+		if(getInactiveCards().size()>0)
+		{
 			for(Card card: getInactiveCards())
 				cardList.append(card.getVal()+" "+card.getCategory()+",");
 			cardList.deleteCharAt(cardList.lastIndexOf(","));
-		} else
+		}
+		else
 			cardList.append(' ');
 		
 		return cardList.toString();
