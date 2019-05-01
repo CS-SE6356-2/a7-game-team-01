@@ -3,6 +3,7 @@
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /* Represents the cards in a specific Player's possession. */
 public class Hand {
@@ -60,11 +61,11 @@ public class Hand {
 	 * Removes all the cards in the list from the active cards, returning a list of
 	 * all cards successfully removed
 	 */
-	public LinkedList<Card> removeCards(LinkedList<Card> cards) {
+	public LinkedList<Card> removeCards(List<Card> list) {
 		LinkedList<Card> removedCards = new LinkedList<Card>();
-		for (int index = 0; index < cards.size(); ++index) {
+		for (int index = 0; index < list.size(); ++index) {
 			for (int j = 0; j < activeCards.size(); j++) {
-				if (cards.get(index).getCardInfo().equals(activeCards.get(j).getCardInfo())) {
+				if (list.get(index).getCardInfo().equals(activeCards.get(j).getCardInfo())) {
 					removedCards.add(activeCards.remove(j));
 					break;
 				}
